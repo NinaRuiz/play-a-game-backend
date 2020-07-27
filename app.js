@@ -4,6 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+var mongoose = require('mongoose');
+
+dotenv.config({path: '.env'});
+
 
 var profileRouter = require('./routes/profiles');
 
@@ -35,6 +41,18 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+mongoose.connect(process.env.MONGO, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(
+    console.log('conected to mongdb'),
+    app.listen(process.env.PORT, () =>{
+      console.log('running on '+ process.env.PORT)
+    }),
+).catch(error =>{
+  console.log('mongodb error', error)
 });
 
 module.exports = app;

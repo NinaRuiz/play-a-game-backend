@@ -7,39 +7,34 @@ const saltRounds = 15;
 
 // Create profile
 // Route: POST 'register/'
-const createProfile = (req, res) =>{
+const createProfile = function(req,res){
+
     // Try this:
     try{
         // Define variables
-        const {name, PIN} = req.body;
-        let password;
+        const {name, PIN, rol} = req.body;
 
         // Hash password
-        bcrypt.genSalt(saltRounds, function(err, salt) {
-            if(err){
-                console.log(err);
-            }else{
-                bcrypt.hash(PIN, salt, function(err, hash) {
-                    if(err){
-                        console.log(err);
-                    }else{
-                        password = hash;
-                    }
+        bcrypt.hash(PIN, saltRounds)
+            .then(function(hashedPassword) {
+                return Profile.create({
+                    name: name,
+                    PIN: hashedPassword,
+                    rol: rol
                 });
-            }
-        });
-
-        // Create profile
-        Profile.create({
-            name: name,
-            PIN: password
-        });
-
-        // Send a response
-        return res.send({
-            status: 'OK',
-            message: 'User Created'
-        })
+            })
+            .then(function() {
+                res.send({
+                    status: 'OK',
+                    message: 'User Created'
+                });
+            })
+            .catch(function(error){
+                res.send({
+                    status: 'ERROR',
+                    message: error.message
+                })
+            });
 
     }catch (e) {
         // In case it was an error

@@ -13,25 +13,25 @@ router.post('/register/', function (req, res) {
 // Delete profile
 // Route: DELETE 'login/:id'
 router.delete('/login/:id', function (req, res) {
-    profileController.createProfile(req, res);
+    profileController.deleteProfile(req, res);
 });
 
 // Get profile
 // Route: GET 'login/:id'
 router.get('/login/:id', function (req, res) {
-    profileController.createProfile(req, res);
+    profileController.getProfile(req, res);
 });
 
 // Update profile
 // Route: POST 'login/:id'
 router.post('/login/:id', function (req, res) {
-    profileController.createProfile(req, res);
+    profileController.updateProfile(req, res);
 });
 
 // Pagination characters
-// Route: GET 'login/paginate/:page'
-router.get('/login/paginate/:page', function (req, res) {
-    profileController.createProfile(req, res);
+// Route: GET 'login/paginate/?:page'
+router.get('/login/paginate/:page?', function (req, res) {
+    profileController.getProfiles(req, res);
 });
 
 module.exports = router;

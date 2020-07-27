@@ -3,8 +3,8 @@ const {Schema} = mongoose;
 
 const profileSchema = new Schema({
     name: {type: String, unique: true},
-    PIN: {type: Number},
-    rol: {default: 'ROL_USER'}
+    PIN: {type: String},
+    rol: {type: String, default: 'USER'}
 });
 
 const model = mongoose.model('profile', profileSchema);
