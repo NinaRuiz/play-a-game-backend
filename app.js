@@ -11,6 +11,7 @@ var unless = require('express-unless');
 
 dotenv.config({path: '.env'});
 
+var characterRouter = require('./routes/characters');
 var profileRouter = require('./routes/profiles');
 var loginRouter = require('./routes/login');
 var auth = require('./middleware/auth-middleware');
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(unless(auth, {path: ['/login/', '/register/']}));
 
 app.use('/', profileRouter);
+app.use('/', characterRouter);
 app.use('/', loginRouter);
 
 // catch 404 and forward to error handler

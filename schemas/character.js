@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const characterSchema = new Schema({
-    player_name: String,
+    player_id: String,
     character_name: String,
     profession: String,
     title: String,
@@ -26,7 +26,7 @@ const characterSchema = new Schema({
     damage_bonus: Number,
     magic: Number,
     sanity: Number,
-    habilities: {
+    abilities: {
         antropology: {type: Number, default: 1},
         arqueology: {type: Number, default: 1},
         art: {type: Number, default: 5},
