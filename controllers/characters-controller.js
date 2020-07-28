@@ -149,7 +149,7 @@ const updateCharacter = (req, res) =>{
 };
 
 // Pagination characters
-// Route: GET /character/paginate/:page
+// Route: GET /character/paginate/:page?
 const getCharacters = (req, res) =>{
     const page = req.params.page;
     const playerId = req.profile._id;
@@ -182,5 +182,5 @@ module.exports = {
     deleteCharacter,
     getCharacter,
     updateCharacter,
-    getCharacter
+    getCharacters
 };
