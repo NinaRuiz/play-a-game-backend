@@ -7,11 +7,13 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 var mongoose = require('mongoose');
+var unless = require('express-unless');
 
 dotenv.config({path: '.env'});
 
-
 var profileRouter = require('./routes/profiles');
+var loginRouter = require('./routes/login');
+var auth = require('./middleware/auth-middleware');
 
 var app = express();
 
@@ -25,7 +27,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Auth Middleware
+app.use(unless(auth, {path: ['/login/', '/register/']}));
+
 app.use('/', profileRouter);
+app.use('/', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
