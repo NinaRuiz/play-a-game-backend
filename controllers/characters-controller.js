@@ -1,6 +1,7 @@
 const Character = require('../schemas/character');
 
 // Create character
+// Route: POST /character/
 const createCharacter = (req, res) =>{
     try{
         // Define variables
@@ -64,21 +65,122 @@ const createCharacter = (req, res) =>{
 };
 
 // Delete character
+// Route: DELETE /character/:id
 const deleteCharacter = (req, res) =>{
+    const characterId = req.params.id;
 
+    Character.findByIdAndRemove(characterId, function (err, characterRemoved) {
+        if(err){
+            res.send({
+                status: 'ERROR',
+                message: err.message
+            })
+        }else{
+            if(!characterRemoved){
+                return res.send({
+                    status: 'NOT_FOUND',
+                    message: 'User not found'
+                })
+            }else{
+                res.send({
+                    status: 'OK',
+                    message: characterRemoved
+                })
+            }
+        }
+    } );
 };
 
 // Get character
+// Route: GET /character/:id
 const getCharacter = (req, res) =>{
+    // Declare variables
+    const characterId = req.params.id;
 
+    // Find profile by id
+    Character.findById(characterId, function (err, characterFound) {
+        if(err){
+            res.send({
+                status: 'ERROR',
+                message: err.message
+            });
+        }else{
+            if(!characterFound){
+                return res.send({
+                    status: 'ERROR',
+                    message: 'User not found'
+                });
+            }else{
+                res.send({
+                    status: 'OK',
+                    message: characterFound
+                });
+            }
+        }
+    });
 };
 
 // Update character
+// Route: POST /character/:id
 const updateCharacter = (req, res) =>{
+    const characterId = req.params.id;
+    const update = req.body;
 
+    Character.findByIdAndUpdate(characterId, update, (err, characterUpdated)=> {
+        if(err){
+            return res.send({
+                status: 'ERROR',
+                message: err.message
+            });
+        }else {
+            if (!characterUpdated) {
+                return res.send({
+                    status: 'ERROR',
+                    message: 'User not found'
+                });
+            } else {
+                res.send({
+                    status: 'OK',
+                    message: characterUpdated
+                });
+            }
+        }
+    });
 };
 
 // Pagination characters
+// Route: GET /character/paginate/:page
 const getCharacters = (req, res) =>{
+    const page = req.params.page;
+    const playerId = req.profile._id;
+    const itemsPerPage = 6;
 
+    Character.find({player_id: playerId}).paginate(page, itemsPerPage, (err, characters, total) => {
+        if(err){
+            return res.send({
+                status: 'ERROR',
+                message: err.message
+            });
+        } else {
+            if(!characters){
+                return res.send({
+                    status: 'ERROR',
+                    message: 'There isn\'t any characters'
+                });
+            }else{
+                return res.send({
+                    pages: total,
+                    notebooks: characters
+                });
+            }
+        }
+    });
+};
+
+module.exports = {
+    createCharacter,
+    deleteCharacter,
+    getCharacter,
+    updateCharacter,
+    getCharacter
 };
