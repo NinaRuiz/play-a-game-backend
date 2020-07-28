@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 
 dotenv.config({path: '.env'});
 
-
+var characterRouter = require('./routes/characters');
 var profileRouter = require('./routes/profiles');
 
 var app = express();
@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', profileRouter);
+app.use('/', characterRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
